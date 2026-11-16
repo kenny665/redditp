@@ -27,10 +27,21 @@ Downloads are in the
    enable **Developer mode**, click **Load unpacked** and pick the unzipped
    folder.
 
+The extension stays installed across browser restarts, as long as:
+
+* the unzipped folder stays where it is (the browser runs it from there, so
+  don't leave it in Downloads);
+* Developer mode stays on. If the browser suggests disabling developer mode
+  extensions at startup, dismiss it.
+
+To update: replace the folder's contents with the new zip, then click the
+reload icon of redditp in `chrome://extensions`. Settings are kept.
+
 ### Firefox
 
 * Signed `redditp-firefox-*.xpi` (when the release has one): open it with
-  Firefox, or `about:addons` → gear → **Install Add-on From File**.
+  Firefox, or `about:addons` → gear → **Install Add-on From File**. It stays
+  installed; install a newer `.xpi` the same way to update.
 * Otherwise download `redditp-firefox-*.zip`, open `about:debugging#/runtime/this-firefox`,
   click **Load Temporary Add-on** and pick the zip. Firefox removes temporary
   add-ons when it restarts: release Firefox only installs signed add-ons
