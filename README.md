@@ -55,6 +55,9 @@ Build from source
 2. Load the folder as an unpacked or temporary extension (see above).
 3. After changing the sources, rebuild and click the reload icon of the
    extension.
+4. `npm install` then `npm run ext:lint:firefox` checks the Firefox build
+   with Mozilla's add-on linter (`web-ext lint`). The 3 jQuery `innerHTML`
+   warnings are expected.
 
 The extension page is the web app itself (`index.html`, `js/`, `css/`,
 `images/`); `browser-extension/` holds the manifest, the background script
@@ -115,7 +118,7 @@ Privacy
 Supported Browsers
 ------------------
 * Chromium based browsers: Chrome, Brave, Edge, Opera, ...
-* Firefox 128+
+* Firefox 140+ (142+ on Android)
 
 URLs
 ----

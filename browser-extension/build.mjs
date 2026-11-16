@@ -22,10 +22,12 @@ firefoxManifest.background = { scripts: ['background.js'] };
 firefoxManifest.browser_specific_settings = {
     gecko: {
         id: 'redditp@kenny665.github.io',
-        strict_min_version: '128.0',
+        strict_min_version: '140.0',
         // Nothing is collected or sent anywhere but the browsed sites.
         data_collection_permissions: { required: ['none'] },
     },
+    // data_collection_permissions exists since Firefox 140, 142 on Android.
+    gecko_android: { strict_min_version: '142.0' },
 };
 
 const build = (name, targetManifest) => {
