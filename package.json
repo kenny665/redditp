@@ -17,5 +17,8 @@
         "npm": "^10.8.1",
         "stylelint": "^16.6.1",
         "stylelint-config-standard": "^36.0.0"
+    },
+    "scripts": {
+        "ext:build": "node browser-extension/build.mjs"
     }
 }

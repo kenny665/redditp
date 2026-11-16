@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "redditp",
+  "version": "0.1.0",
+  "description": "Full-screen slideshow of Reddit and other image sites, using your own reddit.com session.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.redgifs.com/ifr/*",
+        "https://redgifs.com/ifr/*"
+      ],
+      "js": [
+        "redgifs-sound.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "64": "images/favicon.png"
+  },
+  "action": {
+    "default_title": "Open in redditp",
+    "default_icon": {
+      "64": "images/favicon.png"
+    }
+  },
+  "commands": {
+    "open-redditp": {
+      "suggested_key": {
+        "default": "Alt+Shift+P"
+      },
+      "description": "Open the current Reddit page in redditp"
+    }
+  }
+}

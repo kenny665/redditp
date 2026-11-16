@@ -392,7 +392,7 @@ input.textlabel {
 
 div.score {
     position: absolute;
-    background-image: url("images/upvote.svg");
+    background-image: url("../images/upvote.svg");
     opacity: 0.4;
     z-index: -1;
     height: 24px;

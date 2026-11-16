@@ -461,6 +461,40 @@ rp.reddit = {
     skipped_bots: [ 'AutoModerator', 'sneakpeekbot' ],
 };
 
+// As a browser extension page, Reddit's API (even OAuth) is blocked, but
+// www.reddit.com/*.json works with the user's own reddit.com session cookies.
+rp.isExtension = /^(chrome|moz)-extension:$/.test(window.location.protocol);
+if (rp.isExtension) {
+    rp.reddit.base_api = rp.reddit.base;
+    rp.reddit.api = rp.reddit.base;
+
+    // Host permissions bypass CORS, so cookies can be sent even though
+    // Reddit doesn't allow credentialed cross-origin requests.
+    $.ajaxPrefilter(function(options) {
+        if (/^https:\/\/(www\.)?reddit\.com\//.test(options.url))
+            options.xhrFields = $.extend({}, options.xhrFields, { withCredentials: true });
+    });
+
+    // The MV3 extension CSP forbids remote scripts, so JSONP can't work:
+    // strip the callback parameters and fetch plain JSON instead.
+    // '+' puts this ahead of jQuery's own jsonp prefilter.
+    $.ajaxPrefilter('+jsonp', function(options) {
+        var url = options.url;
+        if (/[?&]jsoncallback=\?/.test(url))
+            url += '&nojsoncallback=1'; // flickr
+        url = url.replace(/([?&])[^=&]+=\?(?=&|$)/g, '$1')
+            .replace(/([?&])jsonp=[^&]*/, '$1')
+            .replace(/([?&])format=jsonp(?=&|$)/, '$1format=json')
+            .replace(/&{2,}/g, '&')
+            .replace(/\?&/, '?')
+            .replace(/[?&]$/, '');
+        options.url = url;
+        options.jsonp = false;
+        options.dataType = 'json';
+        options.dataTypes[0] = 'json';
+    });
+}
+
 rp.url = {
     // Set in processUrl()
     root: '', // root of redditp app - image base path
@@ -9063,7 +9097,8 @@ $(function () {
 
         // Set prefix for self links, if in subdirectory
         if (initial)
-            if (pathIsLocation) {
+            // Extension pages only exist as /index.html, keep the path in ?query
+            if (pathIsLocation && !rp.isExtension) {
                 rp.url.root = '/';
             } else {
                 rp.url.base = window.location.pathname + '?';
@@ -9139,7 +9174,20 @@ $(function () {
                 rp.session.after = data.after;
             rp.session.isAnimating = true;
             if (data.loadAfter)
-                rp.session.loadAfter = eval(data.loadAfter);
+                // No eval(): forbidden by the extension CSP
+                rp.session.loadAfter = {
+                    getRedditImages: getRedditImages,
+                    getImgur: getImgur,
+                    getWordPressBlogV2: getWordPressBlogV2,
+                    getWordPressBlog: getWordPressBlog,
+                    getTumblrBlog: getTumblrBlog,
+                    getBloggerBlog: getBloggerBlog,
+                    getDanbooru: getDanbooru,
+                    getE621: getE621,
+                    getFlickr: getFlickr,
+                    getGiphy: getGiphy,
+                    getRule34: getRule34,
+                }[data.loadAfter] || null;
 
             var orig_index = data.index;
             data.photos.forEach(function(photo) {
