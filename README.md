@@ -12,19 +12,34 @@ instead, so **you must be logged in on reddit.com** in the same browser.
 This fork keeps the features of [utopiabound's redditp](https://github.com/utopiabound/redditp)
 (albums, galleries, videos, swipe navigation, duplicates, many supported sites)
 and packages them as a Manifest V3 extension for Chromium browsers (Chrome,
-Brave, Edge).
+Brave, Edge, ...) and Firefox.
 
 Install
 -------
 
-1. Download `redditp-extension-*.zip` from the
-   [latest release](https://github.com/kenny665/redditp/releases/latest) and
-   unzip it.
+Downloads are in the
+[latest release](https://github.com/kenny665/redditp/releases/latest).
+
+### Chrome, Brave, Edge
+
+1. Download `redditp-chromium-*.zip` and unzip it.
 2. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`),
    enable **Developer mode**, click **Load unpacked** and pick the unzipped
    folder.
-3. On any Reddit page, click the redditp toolbar button or press
-   **Alt+Shift+P**: the same subreddit opens in redditp in a new tab.
+
+### Firefox
+
+* Signed `redditp-firefox-*.xpi` (when the release has one): open it with
+  Firefox, or `about:addons` → gear → **Install Add-on From File**.
+* Otherwise download `redditp-firefox-*.zip`, open `about:debugging#/runtime/this-firefox`,
+  click **Load Temporary Add-on** and pick the zip. Firefox removes temporary
+  add-ons when it restarts: release Firefox only installs signed add-ons
+  permanently.
+
+### Usage
+
+On any Reddit page, click the redditp toolbar button or press
+**Alt+Shift+P**: the same subreddit opens in redditp in a new tab.
 
 The extension asks for access to all sites: JSONP is impossible under
 Manifest V3, so the other supported sites (imgur, tumblr, flickr, ...) are
@@ -35,8 +50,9 @@ Redgifs embeds remember your last sound on/off choice and volume.
 Build from source
 -----------------
 
-1. `npm run ext:build` (writes `build/extension/`).
-2. Load `build/extension` as an unpacked extension (see above).
+1. `npm run ext:build` writes `build/extension/` (Chromium) and
+   `build/firefox-extension/` (Firefox: same files, manifest adapted).
+2. Load the folder as an unpacked or temporary extension (see above).
 3. After changing the sources, rebuild and click the reload icon of the
    extension.
 
@@ -99,7 +115,7 @@ Privacy
 Supported Browsers
 ------------------
 * Chromium based browsers: Chrome, Brave, Edge, Opera, ...
-* Firefox is not packaged yet.
+* Firefox 128+
 
 URLs
 ----
