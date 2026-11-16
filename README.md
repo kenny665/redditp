@@ -58,6 +58,11 @@ Build from source
 4. `npm install` then `npm run ext:lint:firefox` checks the Firefox build
    with Mozilla's add-on linter (`web-ext lint`). The 3 jQuery `innerHTML`
    warnings are expected.
+5. Firefox signing (unlisted, nothing is published on addons.mozilla.org):
+   create an API key at <https://addons.mozilla.org/developers/addon/api/key/>,
+   set `WEB_EXT_API_KEY` and `WEB_EXT_API_SECRET`, bump `version` in
+   `browser-extension/manifest.json` (a version can only be signed once), then
+   `npm run ext:sign:firefox`. The signed `.xpi` lands in `build/`.
 
 The extension page is the web app itself (`index.html`, `js/`, `css/`,
 `images/`); `browser-extension/` holds the manifest, the background script

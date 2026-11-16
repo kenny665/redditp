@@ -21,6 +21,7 @@
     },
     "scripts": {
         "ext:build": "node browser-extension/build.mjs",
-        "ext:lint:firefox": "npm run ext:build && web-ext lint --source-dir build/firefox-extension"
+        "ext:lint:firefox": "npm run ext:build && web-ext lint --source-dir build/firefox-extension",
+        "ext:sign:firefox": "npm run ext:lint:firefox && web-ext sign --channel unlisted --source-dir build/firefox-extension --artifacts-dir build"
     }
 }
