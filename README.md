@@ -1,18 +1,48 @@
 redditp
 =======
 
-A full screen reddit presentation or slide show.
+A full screen reddit presentation or slide show, as a **browser extension**.
 
-http://github.com/utopiabound/redditp
+Like [the original redditp](https://github.com/ubershmekel/redditp), redditp is
+now a browser extension: Reddit blocks its API for third-party websites (even
+with OAuth), so a hosted redditp page can no longer load anything. The
+extension reads `www.reddit.com/*.json` with your own reddit.com session
+instead, so **you must be logged in on reddit.com** in the same browser.
 
-Usable Links:
-https://utopiabound.github.io/redditp/?/r/popular
-https://redditp.utopiabound.net/
-file:///path/to/redditp/index.html?/r/gifs
+This fork keeps the features of [utopiabound's redditp](https://github.com/utopiabound/redditp)
+(albums, galleries, videos, swipe navigation, duplicates, many supported sites)
+and packages them as a Manifest V3 extension for Chromium browsers (Chrome,
+Brave, Edge).
 
-Fork from Ubershmekel's
+Install
+-------
 
-http://redditp.com
+1. Download `redditp-extension-*.zip` from the
+   [latest release](https://github.com/kenny665/redditp/releases/latest) and
+   unzip it.
+2. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`),
+   enable **Developer mode**, click **Load unpacked** and pick the unzipped
+   folder.
+3. On any Reddit page, click the redditp toolbar button or press
+   **Alt+Shift+P**: the same subreddit opens in redditp in a new tab.
+
+The extension asks for access to all sites: JSONP is impossible under
+Manifest V3, so the other supported sites (imgur, tumblr, flickr, ...) are
+fetched as plain JSON, which needs host permissions to bypass CORS.
+
+Redgifs embeds remember your last sound on/off choice and volume.
+
+Build from source
+-----------------
+
+1. `npm run ext:build` (writes `build/extension/`).
+2. Load `build/extension` as an unpacked extension (see above).
+3. After changing the sources, rebuild and click the reload icon of the
+   extension.
+
+The extension page is the web app itself (`index.html`, `js/`, `css/`,
+`images/`); `browser-extension/` holds the manifest, the background script
+and the build script.
 
 Hotkeys
 -------
@@ -54,30 +84,28 @@ Features
 	* Flickr	(User/Tag/Search/Trending support) /flickr/[u/*USER*[/*ALBUM*]|t/*TAG*[,*tag2*...]|s/*SEARCH*]
 * Deduplication support when browsing multiple subreddits (e.g. a multireddit /user/NAME/m/MULTIREDDIT or /r/funny+pics)
 * Albums will display inline for subreddits
-* You can use this project locally
 * Albums/Video/More in comments will be detected in title and automatically found
 * For subreddits that have "requests", responses will be shown as albums, also 'PsBattles:' is similarly special cased
-* Works on iOS 9+ and modern browsers
 
 Privacy
 -------
 
-* No Google Analytics
-* Only interaction with the host serving the page is the initial GET.
-* All changes to URL via clicks or typing into the location bar (bottom left) are managed in the browser.
-* History and preferences are stored locally in the browser
-* Obviously, browsing reddit sends requests to reddit, and similarly for other
-  sites.  The minimum information is sent necessary to complete data retrieval.
+* No analytics, no server: everything runs in the extension page.
+* History and preferences are stored locally in the browser.
+* Browsing reddit sends requests to reddit with your reddit.com session, and
+  similarly for other sites. The minimum information is sent necessary to
+  complete data retrieval.
 
 Supported Browsers
 ------------------
-* Modern Desktop (firefox, chrome, safari, webkit, opera, etc.)
-* iOS 9.x+
-   * Pre-11 - No Unicode Regex (titles won't have as many substitutions / links)
-* Android (tested on FireOS 7 ~ Android 9)
+* Chromium based browsers: Chrome, Brave, Edge, Opera, ...
+* Firefox is not packaged yet.
 
 URLs
 ----
+
+Type these in the location box (bottom left), or open
+`index.html?/r/SUBREDDIT` in the extension.
 
 ## Reddit Specific:
 * /r/*SUBREDDIT*
@@ -129,49 +157,11 @@ These are available from the popup menu
 * /.../new
 * /.../old
 
-
-Installation
-------------
-* Can be setup to use base url:
-
-Just git checkout in /PATH/TO/, and then setup an Apache .conf file as below:
-
-        <VirtualHost *:80>
-        	ServerName redditp.example.com
-        	DocumentRoot "/PATH/TO/redditp"
-        	ServerAdmin hostmaster@example.com
-        	<Location />
-        		Order allow,deny
-        		Allow from all
-        		Deny from none
-        	</Location>
-        </VirtualHost>
-
-Access via:
-
-http://redditp.example.com/r/popular
-
-
-* Can be setup in subdirectory without rewriting
-
-Checkout in a directory available via the web, or have an Alias added to Apache:
-
-        Alias /redditp /PATH/TO/redditp
-
-Access via standard CGI format:
-
-https://utopiabound.github.io/redditp/?/r/popular or
-https://utopiabound.github.io/redditp/index.html?/r/popular
-
-Known Issues
-------------
-
-* access via http://HOST/redditp/r/aww fails due to the rewrite rules
-
 Credits
 ----------
 
-* Ubershmekel http://yuvalg.com/
+* Ubershmekel http://yuvalg.com/ (original redditp)
+* utopiabound https://github.com/utopiabound/redditp (the version this extension packages)
 * [js-cookie](https://github.com/js-cookie/js-cookie) for managing cookies
 * Favicon by Double-J designs http://www.iconfinder.com/icons/68600/ (CC BY 3.0)
 * Slideshow based on http://demo.marcofolio.net/fullscreen_image_slider/
